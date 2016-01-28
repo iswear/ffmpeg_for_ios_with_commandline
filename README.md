@@ -2,46 +2,53 @@
 The project provide the detail steps for you to compile ffmpeg to iOS with commendline supported. The complie script was from https://github.com/kewlbear/FFmpeg-iOS-build-script. Thank you!
 
 ##the modification of source code and some other file
-1.copy these files and folders to libutil (ffmpeg.h ffmpeg.c ffmpeg_opt.c ffmpeg_filter.c cmdutils.h cmdutils_common_opts.h cmdutils_opencl.c cmdutils.c compat)in fact, I copy all *.h and *.c files in ffmpeg and compat to libutil but the really userful files should be these I said above;   
-2.modify the source code in ffmpeg.h   
-	add code as follows:   
-			#include <setjmp.h>   
+1.copy these files and folders to libutil (ffmpeg.h ffmpeg.c ffmpeg_opt.c ffmpeg_filter.c cmdutils.h cmdutils_common_opts.h cmdutils_opencl.c cmdutils.c compat)in fact, I copy all .h and .c files in ffmpeg and compat to libutil but the really userful files should be these I said above;   
+2.modify the source code in ffmpeg.h
+		   add code as follows: 
+		   
+		    #include <setjmp.h>   
 			extern jmp_buf exit_buf;   
 			int ffmpeg_main(int argc, char **argv);   
 		
 3.modify the source code in ffmpeg.c   
 	add code as follows:   
-			jmp_buf exit_buf;   
+			
+		jmp_buf exit_buf;   
 		   
-	in the end of function ffmpeg_cleanup   
-	add code as follows:   
-			nb_input_streams = 0;   
-			nb_input_files   = 0;   
-			nb_output_streams = 0;   
-			nb_output_files   = 0;   
-			nb_filtergraphs = 0;   
+in the end of function ffmpeg_cleanup   
+add code as follows:   
+		
+		nb_input_streams = 0;   
+		nb_input_files   = 0;   
+		nb_output_streams = 0;   
+		nb_output_files   = 0;   
+		nb_filtergraphs = 0;   
 		   
-	rename the function main to ffmpeg_main the modify the code like this:   
-			if(setjmp(exit_buf)){   
-				return 0;   
-			}else{   
-				old code balabala   
-				....   
-			} 
+rename the function main to ffmpeg_main the modify the code like this:   
+		
+		if(setjmp(exit_buf)){   
+			return 0;   
+		}else{   
+			old code balabala   
+			....   
+		} 
 
 4.modify the source code in cmdutils.h   
 	add code as follows:   
-			#include <setjmp.h>   
+			
+			#include setjmp.h   
 			extern jmp_buf exit_buf;   
 		
 5.modify the source code in cmdutils.c   
-	replace the code of function exit_program   
+	replace the code of function exit_program with code below:   
+			
 			if (program_exit)   
 				program_exit(ret);   
 			longjmp(exit_buf, 1);   
 		
 6.modify the source code in ffmpeg_opt.c   
-	comment some code in function assert_file_overwrite like this   
+	comment some code in function assert_file_overwrite like this:      
+			
 			/*   
 			if (stdin_interaction && !no_file_overwrite) {   
 				fprintf(stderr,"File '%s' already exists. Overwrite ? [y/N] ", filename);   
@@ -60,13 +67,16 @@ The project provide the detail steps for you to compile ffmpeg to iOS with comme
         		//}   
         
 7.modify the Makefile in libavutil as follows   
-	add objs:   
-			cmdutils.o                                               \   
-			ffmpeg.o                                                 \   
-			ffmpeg_opt.o                                             \   
-			ffmpeg_filter.o                                          \   
-	add headers:   
-			ffmpeg.h                                                 \   
+	add objs:  
+			 
+			cmdutils.o                                 \   
+			ffmpeg.o                                   \   
+			ffmpeg_opt.o                               \   
+			ffmpeg_filter.o                            \  
+					
+add headers:  
+			 
+			ffmpeg.h                                   \   
 		
 ##compile   
 	run the script ./build-ffmpeg.sh (the arches you wanted)   
