@@ -83,7 +83,11 @@ add headers:
 	add the lib and headers to you project and add extern "C" {} for the header files you want to use   
 	   
 ##besides   
-	I'm not good at Makefile, so I borrow the libavutil. You can write a single one , that would be much better, I think. There is a compiled lib in the projects and a test commandline class FFMpegCommand, All those was compiled in XCODE 7.2.I think there maybe some memory leak in the code. It exits after end running before we modify the source code,And now it doesn't. If you found it, I think you have to modify it by yourself. If time allowed, I will check it. I think it must be a hard job. so good luck!
+	I'm not good at Makefile, so I borrow the libavutil. You can write a single one , that would be much better, I think. There   
+	is a compiled lib in the projects and a test commandline class FFMpegCommand, All those was compiled in XCODE 7.2.I think     
+	there maybe some memory leak in the code. It exits after end running before we modify the source code,And now it doesn't.    
+	If you found it, I think you have to modify it by yourself. If time allowed, I will check it. I think it must be a hard    
+	job. so good luck!
 
 ##References   
 https://github.com/kewlbear/FFmpeg-iOS-build-script   
